@@ -1,0 +1,80 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .delete-wrapper {
+        max-width: 550px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff8f8;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .delete-wrapper h2 {
+        text-align: center;
+        color: #d9534f;
+        margin-bottom: 20px;
+    }
+
+    .delete-wrapper p {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .delete-wrapper strong {
+        color: #000;
+    }
+
+    .delete-wrapper form {
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin: 0 10px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-danger {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-secondary {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<div class="delete-wrapper">
+    <h2>Confirm Delete</h2>
+    <p>
+        Are you sure you want to delete <strong>{{ student.user.get_full_name }}</strong>
+        (Roll: <strong>{{ student.roll_number }}</strong>)?
+    </p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'manage_students' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

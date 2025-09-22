@@ -1,0 +1,137 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="timetable-container">
+    <h2>Admin - Full Timetable</h2>
+
+    <!-- Add Timetable Button -->
+    <div class="action-buttons">
+        <a href="{% url 'add_timetable' %}" class="add-btn">+ Add Timetable Entry</a>
+    </div>
+
+    <!-- Filter Form -->
+    <form method="get" class="filter-form">
+        Class: <input type="text" name="class" placeholder="Filter by Class" value="{{ class_filter }}">
+        Teacher: <input type="text" name="teacher" placeholder="Filter by Teacher" value="{{ teacher_filter }}">
+        <select name="day">
+            <option value="">All Days</option>
+            {% for code, name in days %}
+                <option value="{{ code }}" {% if day_filter == code %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+        <a href="{% url 'admin_timetable' %}" class="reset-btn">Reset</a>
+    </form>
+
+    <!-- Timetable Table -->
+    <table class="timetable-table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Course</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Teacher</th>
+                <th>Room</th>
+                <th>Time Slot</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in timetable %}
+            <tr>
+                <td>{{ row.get_day_display }}</td>
+                <td>{{ row.course.name }}</td>
+                <td>{{ row.class_name }}</td>
+                <td>{{ row.section }}</td>
+                <td>{{ row.teacher.username }}</td>
+                <td>{{ row.room }}</td>
+                <td>{{ row.time_slot }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">No timetable entries found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+.timetable-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.timetable-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.add-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+.filter-form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.filter-form input, .filter-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.filter-form button, .reset-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.reset-btn {
+    background-color: #6c757d;
+}
+
+.timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.timetable-table th, .timetable-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.timetable-table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+.timetable-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
+{% endblock %}

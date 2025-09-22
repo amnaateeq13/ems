@@ -1,0 +1,146 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-header h2 {
+        color: #1d3557;
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+
+    /* Profile Info Layout */
+    .profile-info-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        flex-wrap: wrap;
+    }
+
+    .profile-info {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .profile-info h3 {
+        color: #457b9d;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 5px;
+    }
+
+    .profile-info p {
+        font-size: 15px;
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #457b9d;
+        margin-left: 20px;
+    }
+
+    .children-list {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .children-list h3 {
+        color: #457b9d;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 5px;
+    }
+
+    .children-list ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .children-list li {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        background: #f1f1f1;
+        border-radius: 6px;
+    }
+
+    /* Update Button */
+    .btn-update {
+        display: inline-block;
+        background-color: #2a9d8f;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+    .btn-update:hover {
+        background-color: #21867a;
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>Parent Profile</h2>
+        <p>Welcome, {{ parent_profile.user.first_name }} {{ parent_profile.user.last_name }}</p>
+        <a href="{% url 'update_parent_profile' %}" class="btn-update">Update Profile</a>
+    </div>
+
+    <!-- Profile Info + Picture -->
+    <div class="profile-info-container">
+        <div class="profile-info">
+            <h3>Profile Information</h3>
+            <p><strong>Parent ID:</strong> {{ parent_profile.parent_id }}</p>
+            <p><strong>Username:</strong> {{ parent_profile.user.username }}</p>
+            <p><strong>Email:</strong> {{ parent_profile.user.email }}</p>
+            <p><strong>Contact Number:</strong> {{ parent_profile.contact_number }}</p>
+            <p><strong>Address:</strong> {{ parent_profile.address|default:"Not Provided" }}</p>
+        </div>
+        
+    </div>
+
+    <!-- Children List -->
+    <div class="children-list">
+        <h3>Children</h3>
+        {% if children %}
+        <ul>
+            {% for child in children %}
+            <li>{{ child.user.first_name }} {{ child.user.last_name }} 
+                - {{ child.class_name }} ({{ child.roll_number }})
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No children linked to this parent.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

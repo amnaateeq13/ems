@@ -1,0 +1,93 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .announcement-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #fefefe;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .announcement-container h2 {
+        text-align: center;
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form p {
+        margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        font-size: 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .back-btn {
+        display: inline-block;
+        background-color: #95a5a6;
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 5px;
+        margin-top: 15px;
+        transition: background-color 0.3s ease;
+        text-align: center;
+    }
+
+    .back-btn:hover {
+        background-color: #7f8c8d;
+    }
+</style>
+
+<div class="announcement-container">
+    <h2>Create Announcement for Students or Parents</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-btn">Post Announcement</button>
+    </form>
+    <br>
+    <a href="{% url 'teacher_announcements' %}" class="back-btn">Back to Your Announcements</a>
+</div>
+{% endblock %}

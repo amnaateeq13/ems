@@ -1,0 +1,72 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .confirm-box {
+        max-width: 600px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #fff3f3;
+        border: 1px solid #f5c6cb;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: white;
+        
+    }
+
+    p {
+        font-size: 16px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .btn-container {
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        border: none;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .btn-danger {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-secondary {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<div class="confirm-box">
+    <h2 style="color: red;text-align: center;"> Confirm Delete</h2>
+    <p>Are you sure you want to delete <strong>{{ teacher.get_full_name }}</strong> ({{ teacher.username }})?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="btn-container">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'manage_teachers' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

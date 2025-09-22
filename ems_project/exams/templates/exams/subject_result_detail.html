@@ -1,0 +1,86 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+
+<style>
+    h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+
+    .custom-table {
+        width: 90%;
+        margin: 0 auto 40px auto;
+        border-collapse: collapse;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .custom-table thead {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 14px 18px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .custom-table tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .custom-table td {
+        font-size: 15px;
+        color: #333;
+    }
+
+    .custom-table th {
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    p {
+        text-align: center;
+        color: #7f8c8d;
+        font-style: italic;
+        margin-top: 20px;
+    }
+</style>
+
+<h2> Results for {{ subject.name }}</h2>
+
+{% if results %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>Exam Type</th>
+            <th>Obtained Marks</th>
+            <th>Total Marks</th>
+            <th>Percentage</th>
+            <th>Grade</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.exam_name }}</td>
+            <td>{{ result.obtained_marks }}</td>
+            <td>{{ result.total_marks }}</td>
+            <td>{{ result.percentage|floatformat:2 }}%</td>
+            <td>{{ result.grade }}</td>
+            <td>{{ result.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No results found for this subject.</p>
+{% endif %}
+
+{% endblock %}

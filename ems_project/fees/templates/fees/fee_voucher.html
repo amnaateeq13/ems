@@ -1,0 +1,82 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="voucher-container">
+    <h2>Fee Voucher</h2>
+
+    <div id="voucher-box" class="voucher-box">
+        <p><strong>Student ID:</strong> {{ fee.student.student_profile.roll_number }}</p>
+        <p><strong>Student Name:</strong> {{ fee.student.username }}</p>
+        <p><strong>Class:</strong> {{ fee.student.student_profile.class_name }}</p>
+        <p><strong>Year:</strong> {{ fee.year }}</p>
+        <p><strong>Annual Fee:</strong> {{ fee.annual_fee }}</p>
+        <p><strong>Date Generated:</strong> {{ fee.date_generated|date:"Y-m-d" }}</p>
+        <p><strong>Due Date:</strong> {{ fee.due_date|date:"Y-m-d" }}</p>
+        <p><strong>Status:</strong> {{ fee.status|title }}</p>
+    </div>
+
+    <div class="actions">
+        {% if fee.status == 'paid' %}
+            <button class="btn-print disabled" disabled>Paid - Printing Disabled</button>
+        {% else %}
+            <button onclick="printVoucher()" class="btn-print">Print Voucher</button>
+        {% endif %}
+        <a href="{% url 'fee_list' %}" class="btn-back">Back to Fees</a>
+    </div>
+</div>
+
+<script>
+function printVoucher() {
+    // Print only the voucher box
+    var printContent = document.getElementById('voucher-box').innerHTML;
+    var originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload();  // Reload page to restore scripts & CSS
+}
+</script>
+
+<style>
+    .voucher-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #f9f9f9;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    .voucher-container h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .voucher-box {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: left;
+    }
+    .voucher-box p {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+    .actions {
+        margin-top: 20px;
+    }
+    .btn-print, .btn-back {
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        margin: 0 5px;
+        font-size: 14px;
+    }
+    .btn-print { background-color: #28a745; border: none; cursor: pointer; }
+    .btn-back { background-color: #6c757d; }
+    .btn-print:hover:not(.disabled), .btn-back:hover { opacity: 0.85; }
+    .btn-print.disabled { background-color: gray; cursor: not-allowed; }
+</style>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .teacher-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        color: rgb(255, 255, 255);
+        margin-bottom: 20px;
+    }
+
+    .add-teacher-btn {
+        display: inline-block;
+        padding: 10px 16px;
+        background-color: #004466;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+
+    .add-teacher-btn:hover {
+        background-color: #0278b3;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .search-bar input {
+        width: 1000px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        font-size: 14px;
+    }
+
+    thead {
+        background-color: #f5f5f5;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-sm {
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        text-decoration: none;
+        margin-right: 5px;
+    }
+
+    .btn-outline-primary {
+        color: #004466;
+        border: 1px solid #004466;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: #004466;
+        border: 1px solid #004466;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+
+<div class="teacher-container">
+    <h2 style="color: black;">Manage Teachers</h2>
+
+    <a href="{% url 'add_teacher' %}" class="add-teacher-btn"> Add New Teacher</a>
+
+    <!-- ✅ Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by ID, Name, Email, Dept, or Subject...">
+    </div>
+
+    <table>
+        <thead>
+            <tr style="background-color: #004466; color: white;">
+                <th>Teacher ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Qualification</th>
+                <th>Department</th>
+                <th>Subject Specialization</th>
+                <th>Contact Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="teacher_table_body">
+            {% include 'teachers/teacher_table_body.html' %}
+        </tbody>
+    </table>
+</div>
+
+<!-- ✅ Instant Search Script -->
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    let query = this.value;
+
+    fetch(`{% url 'search_teachers_ajax' %}?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('teacher_table_body').innerHTML = data.html;
+        });
+});
+</script>
+{% endblock %}

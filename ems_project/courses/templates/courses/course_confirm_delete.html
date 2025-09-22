@@ -1,0 +1,67 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<style>
+    .delete-container {
+        max-width: 500px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    .delete-container h2 {
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+
+    .delete-container p {
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .delete-btn {
+        background-color: #004466;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    .delete-btn:hover {
+        background-color: #c82333;
+    }
+
+    .cancel-btn {
+        background-color: #004466;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .cancel-btn:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<div class="delete-container">
+    <h2>Confirm Delete</h2>
+    <p>Are you sure you want to delete the course "<strong>{{ course.name }}</strong>"?</p>
+    <form method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn">Yes, Delete</button>
+    </form>
+    <a href="{% url 'course_list' %}" class="cancel-btn">Cancel</a>
+</div>
+{% endblock %}

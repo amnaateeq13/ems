@@ -1,0 +1,85 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<style>
+  .upload-container {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .upload-container h2 {
+    color: #1d3557;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .upload-container form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload-container label {
+    margin-top: 12px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .upload-container input[type="text"],
+  .upload-container input[type="number"],
+  .upload-container select {
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  .upload-container .btn-submit {
+    background-color: #1d3557;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .upload-container .btn-submit:hover {
+    background-color: #16324f;
+  }
+</style>
+
+<div class="upload-container">
+  <h2>Upload Exam Result</h2>
+
+  <form id="exam-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    {% if existing %}
+        <input type="hidden" name="overwrite" value="yes">
+        <p style="color: red;">This result already exists.</p>
+    {% endif %}
+
+    <button type="submit" class="btn-submit" id="submit-btn">Submit</button>
+  </form>
+</div>
+
+<script>
+  const resultExists = "{{ existing|yesno:'true,false' }}";
+
+  if (resultExists === "true") {
+    document.getElementById('exam-form').addEventListener('submit', function (event) {
+      const confirmOverwrite = confirm("⚠️ This result already exists. Do you want to overwrite it?");
+      if (!confirmOverwrite) {
+        event.preventDefault();
+      }
+    });
+  }
+</script>
+{% endblock %}

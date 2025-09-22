@@ -1,0 +1,176 @@
+{% extends 'users/dashboard_base.html' %}
+{% load static %}
+{% block content %}
+{% block extra_css %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    h2 {
+        color: #ffffff;
+        margin-bottom: 20px;
+    }
+
+    .search-box {
+        padding: 10px;
+        width: 1000px;
+        margin-bottom: 20px;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+
+    .custom-table th,
+    .custom-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .custom-table th {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-add {
+        display: inline-block;
+        background-color: #004466;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .btn-allocate {
+    background-color: #004466;  /* Bootstrap info color */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 5px;
+    }
+
+    .btn-allocate:hover {
+        background-color: #004466;
+        color: white;
+    }
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .btn-edit {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-delete {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn-allocate {
+        background-color: #004466;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+</style>
+{% endblock %}
+
+
+<h2 style="color: black;">Courses</h2>
+<a href="{% url 'add_course' %}" class="btn btn-add"> Add New Course</a><br><br>
+<input type="text" id="searchInput" placeholder="Search courses..." class="search-box">
+
+{% if courses %}
+<table class="custom-table" id="coursesTable">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Teacher</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td>{{ course.code }}</td>
+            <td>{{ course.name }}</td>
+            <td>{{ course.description }}</td>
+            <td>{{ course.teacher.get_full_name }}</td>
+            <td>
+                <div class="button-group">
+                    <a href="{% url 'edit_course' course.pk %}" class="btn btn-edit">Edit</a>
+                    <a href="{% url 'delete_course' course.pk %}" class="btn btn-delete">Delete</a>
+                    <a href="{% url 'allocate_course' course.id %}" class="btn btn-allocate">Allocate</a>
+                </div>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No courses available.</p>
+{% endif %}
+
+
+
+
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const rows = document.querySelectorAll("#coursesTable tbody tr");
+
+    searchInput.addEventListener("keyup", function () {
+        const value = this.value.toLowerCase();
+        rows.forEach(row => {
+            const visible = [...row.children].some(td => td.textContent.toLowerCase().includes(value));
+            row.style.display = visible ? "" : "none";
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #1d3557;
+        margin-bottom: 20px;
+    }
+
+    .form-container form p {
+        margin-bottom: 15px;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-container input,
+    .form-container select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn-success {
+        background-color: #2a9d8f;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-block;
+        margin-right: 10px;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-success:hover {
+        background-color: #21867a;
+    }
+
+    .btn-cancel {
+        background-color: #e63946;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    .btn-cancel:hover {
+        background-color: #b02a37;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Edit Parent - {{ parent.parent_id }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h3>User Information</h3>
+        {{ user_form.as_p }}
+
+        <h3>Parent Profile</h3>
+        {{ profile_form.as_p }}
+
+        <button type="submit" class="btn-success">Update Parent</button>
+        <a href="{% url 'parent_list' %}" class="btn-cancel">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .attendance-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+    }
+
+    .attendance-container h2 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .search-bar {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+    }
+
+    .subject-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .subject-item {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 15px;
+        transition: background-color 0.3s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .subject-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    .subject-info {
+        flex: 1;
+    }
+
+    .subject-info p {
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .view-btn {
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background 0.3s;
+    }
+
+    .view-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .no-subjects {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+        padding: 20px;
+    }
+</style>
+
+<div class="attendance-container">
+    <h2>Your Enrolled Subjects</h2>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search subjects by name, code, or teacher..." onkeyup="filterSubjects()">
+    </div>
+
+    {% if subjects %}
+    <ul class="subject-list" id="subjectList">
+        {% for subject in subjects %}
+        <li class="subject-item">
+            <div class="subject-info">
+                <p><strong>Course:</strong> {{ subject.name }}</p>
+                <p><strong>Course Code:</strong> {{ subject.code }}</p>
+                <p><strong>Instructor:</strong> {{ subject.teacher.get_full_name }}</p>
+                <p><strong>Your Class:</strong> {{ request.user.student_profile.class_name }} - {{ request.user.student_profile.section }}</p>
+            </div>
+            <a href="{% url 'student_attendance_detail' subject.id %}" class="view-btn">View Attendance</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="no-subjects">No subjects found.</div>
+    {% endif %}
+</div>
+
+<script>
+function filterSubjects() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const items = document.querySelectorAll('.subject-item');
+
+    items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(input) ? 'flex' : 'none';
+    });
+}
+</script>
+{% endblock %}

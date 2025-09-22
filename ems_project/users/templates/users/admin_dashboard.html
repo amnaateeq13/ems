@@ -1,0 +1,81 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <h2>Admin Dashboard</h2>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Total Teachers</h3>
+            <p>{{ total_teachers }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Students</h3>
+            <p>{{ total_students }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Parents</h3>
+            <p>{{ total_parents }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Courses</h3>
+            <p>{{ total_courses }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Announcements</h3>
+            <p>{{ total_announcements }}</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .dashboard-container h2 {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .stats-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .stat-card {
+        flex: 1 1 180px;
+        background: linear-gradient(135deg, #004466, #00c6ff);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: 0.3s;
+    }
+    .stat-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .stat-card p {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 768px) {
+        .stat-card {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Education Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background: #004466; color: white; padding: 1em; text-align: center; }
+        footer { background: #004466; color: white; text-align: center; padding: 1em; position: fixed; bottom: 0; width: 100%; }
+        main { padding: 2em; min-height: 80vh; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Education Management System</h1>
+        <nav>
+         
+            <a href="{% url 'schema-swagger-ui' %}" target="_blank">Swagger UI</a>
+            <a href="{% url 'schema-redoc' %}" target="_blank">ReDoc</a>
+            <a href="{% url 'api-endpoints' %}">API Endpoints</a>
+            
+            {% if user.is_authenticated %}
+                {% if user.role == "admin" %}
+                    <a href="/admin-dashboard/">Admin Dashboard</a>
+                    <a href="/announcements/">Announcements</a>
+                {% elif user.role == "teacher" %}
+                    <a href="/teacher-dashboard/">Teacher Dashboard</a>
+                    <a href="/attendance/">Attendance</a>
+                    <a href="/courses/">Courses</a>
+                    <a href="/exams/">Exams</a>
+                    <a href="/announcements/">Announcements</a>
+                {% elif user.role == "student" %}
+                    <a href="/student-dashboard/">Student Dashboard</a>
+                    <a href="/student/profile/">Profile</a>
+                    <a href="/attendance/">Attendance</a>
+                    <a href="/exams/">Results</a>
+                    <a href="/fees/">Fees</a>
+                    <a href="/announcements/">Announcements</a>
+                {% elif user.role == "parent" %}
+                    <a href="/parent-dashboard/">Parent Dashboard</a>
+                    <a href="/parent/profile/">Profile</a>
+                    <a href="/attendance/">Child Attendance</a>
+                    <a href="/exams/">Child Results</a>
+                    <a href="/fees/">Fees</a>
+                    <a href="/announcements/">Announcements</a>
+                {% endif %}
+                <a href="/logout/">Logout</a>
+            {% else %}
+                <a href="/">Home</a>
+                <a href="/login/">Login</a>
+            {% endif %}
+        </nav>
+        
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>© 2025 Education Management System | Smart Solutions for Modern Institutions</p>
+        <p>Contact: info@ems.com | Phone: +92 300 1234567</p>
+    </footer>
+</body>
+</html>

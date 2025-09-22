@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMS Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #1d3557;
+            color: white;
+            padding: 15px 30px;
+            text-align: left;
+        }
+
+        .footer {
+            background-color: #1d3557;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2f3e46;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: #f1f1f1;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            width: 220px;
+            text-align: center;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .logout {
+            margin-top: 30px;
+            color: #fca311;
+        }
+        .chat-btn {
+        display: inline-block;
+        /* padding: 8px 16px; */
+        /* background-color: #3498db; */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 17px;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    
+
+    .chat-badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 12px;
+    }
+    .button-link {
+        display: inline-block;
+        /* padding: 8px 16px;
+        background-color: #e67e22; */
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 17px;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    
+
+    .new-badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 12px;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Education Management System</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            {% if user.role == 'admin' %}
+                <a href="/admin-dashboard/">Admin Home</a>
+                <a href="/student/">Manage Students</a>
+                <a href="/teacher/">Manage Teachers</a>
+                <a href="/parent/"> Manage Parents</a>
+                <a href="/courses/"> Manage Courses</a>
+                <a href="/exams/"> Manage Exams</a>
+                <a href="/fees/"> Manage Fees</a>
+                <a href="{% url 'admin_attendance_subject_list' %}">Attendance Report</a>
+                <a href="{% url 'admin_timetable' %}">Time Table</a>
+                <a href="{% url 'announcements' %}" class="button-link">
+                    Announcements
+                    {% if unread_announcement_count > 0 %}
+                        <span class="new-badge">New</span>
+                    {% endif %}
+                </a>
+                {% if user.role in 'admin teacher student' %}
+                    <a href="{% url 'role_chat' %}" class="chat-btn">
+                        Chat
+                        {% if unread_count_global > 0 %}
+                            <span class="chat-badge">New</span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+
+            {% elif user.role == 'teacher' %}
+                <a href="/teacher-dashboard/">Teacher Home</a>
+                <a href="/teacher/update_teacher_profile/">Update Profile</a>
+                <a href="/courses/">Courses</a>
+                <a href="{% url 'teacher_timetable' %}">Time Table</a>
+                <a href="{% url 'teacher_subjects' %}">Attendance</a>
+                <a href="{% url 'exams:exam_list' %}">Exams</a>
+                <a href="{% url 'teacher_announcements' %}" class="button-link">
+                    Announcements
+                    {% if unread_announcement_count > 0 %}
+                        <span class="new-badge">New</span>
+                    {% endif %}
+                </a>
+                {% if user.role in 'admin teacher student' %}
+                    <a href="{% url 'role_chat' %}" class="chat-btn">
+                        Chat
+                        {% if unread_count_global > 0 %}
+                            <span class="chat-badge">New</span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+            {% elif user.role == 'student' %}
+                <a href="/student-dashboard/">Student Home</a>
+                <a href="/student/profile/">Profile</a>
+                <a href="{% url 'student_timetable' %}">Time Table</a>
+                <a href="{% url 'student_subjects' %}">Attendance</a>
+                <a href="{% url 'exams:student_subjects' %}">Results</a>
+                <a href="/fees/">Fees</a>
+                <a href="{% url 'announcements' %}" class="button-link">
+                    Announcements
+                    {% if unread_announcement_count > 0 %}
+                        <span class="new-badge">New</span>
+                    {% endif %}
+                </a>
+                {% if user.role in 'admin teacher student' %}
+                    <a href="{% url 'role_chat' %}" class="chat-btn">
+                        Chat
+                        {% if unread_count_global > 0 %}
+                            <span class="chat-badge">New</span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+
+            {% elif user.role == 'parent' %}
+                <a href="/parent-dashboard/">Parent Home</a>
+                <a href="/parent/profile/">Profile</a>
+                <a href="{% url 'parent_attendance' %}">Child Attendance</a>
+                <a href="{% url 'exams:parent_exam_results' %}">View Results</a>
+                <a href="{% url 'parent_timetable' %}">View Timetable</a>
+
+
+                <a href="/fees/">Fees</a>
+                <a href="/announcements/">Announcements</a>
+                {% if user.role in 'admin teacher student parent' %}
+                    <a href="{% url 'role_chat' %}" class="chat-btn">
+                        Chat
+                        {% if unread_count_global > 0 %}
+                            <span class="chat-badge">New</span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+            {% endif %}
+            <a href="/logout/" class="logout">Logout</a>
+        </div>
+
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 EMS. All rights reserved.</p>
+    </div>
+
+</body>
+</html>

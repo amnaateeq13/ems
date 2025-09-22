@@ -1,0 +1,31 @@
+<!-- {% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<h2>Fee Records</h2>
+{% if records %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Student</th>
+            <th>Month</th>
+            <th>Total Fee</th>
+            <th>Amount Paid</th>
+            <th>Due Date</th>
+            <th>Payment Date</th>
+            <th>Status</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.student.user.get_full_name }}</td>
+            <td>{{ record.month }}</td>
+            <td>{{ record.total_fee }}</td>
+            <td>{{ record.amount_paid }}</td>
+            <td>{{ record.due_date }}</td>
+            <td>{{ record.payment_date|default:"-" }}</td>
+            <td>{% if record.is_paid %}Paid{% else %}Due{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No fee records found.</p>
+{% endif %}
+{% endblock %} -->

@@ -1,0 +1,112 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="fee-container">
+    <h2>Your Fee Details</h2>
+
+    <table class="fee-table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Class</th>
+                <th>Year</th>
+                <th>Annual Fee</th>
+                <th>Date Generated</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Voucher</th> <!-- ✅ New column -->
+            </tr>
+        </thead>
+        <tbody>
+        {% for fee in fees %}
+            <tr>
+                <td>{{ fee.student.student_profile.roll_number }}</td>
+                <td>{{ fee.student.username }}</td>
+                <td>{{ fee.student.student_profile.class_name }}</td>
+                <td>{{ fee.year }}</td>
+                <td>{{ fee.annual_fee }}</td>
+                <td>{{ fee.date_generated|date:"Y-m-d" }}</td>
+                <td>{{ fee.due_date|date:"Y-m-d" }}</td>
+                <td>
+                    <span class="status {{ fee.status }}">
+                        {{ fee.status|title }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'fee_voucher' fee.id %}" class="btn btn-voucher" target="_blank">Show Voucher</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9">No fee record found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .fee-container {
+        max-width: 100%;
+        margin: 50px auto;
+        background: #f9f9f9;
+        padding: 25px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+    .fee-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .fee-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    .fee-table th, .fee-table td {
+        padding: 10px 12px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .fee-table th {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .fee-table tr:hover {
+        background-color: #f5f7fa;
+    }
+    .status.paid {
+        color: green;
+        font-weight: 600;
+    }
+    .status.unpaid {
+        color: red;
+        font-weight: 600;
+    }
+    /* ✅ Voucher Button */
+    .btn-voucher {
+        padding: 5px 12px;
+        border-radius: 5px;
+        background-color: #17a2b8;
+        color: white;
+        font-size: 12px;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.2s;
+    }
+    .btn-voucher:hover {
+        background-color: #138496;
+    }
+</style>
+{% endblock %}

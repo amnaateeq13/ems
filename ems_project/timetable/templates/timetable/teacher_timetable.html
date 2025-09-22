@@ -1,0 +1,63 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="timetable-container">
+    <h2>Your Timetable</h2>
+    <table class="timetable-table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Course</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Room</th>
+                <th>Time Slot</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in timetable %}
+            <tr>
+                <td>{{ row.get_day_display }}</td>
+                <td>{{ row.course.name }}</td>
+                <td>{{ row.class_name }}</td>
+                <td>{{ row.section }}</td>
+                <td>{{ row.room }}</td>
+                <td>{{ row.time_slot }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No timetable assigned yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+.timetable-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.timetable-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.timetable-table th, .timetable-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+.timetable-table th {
+    background-color: #007BFF;
+    color: white;
+}
+.timetable-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+</style>
+{% endblock %}

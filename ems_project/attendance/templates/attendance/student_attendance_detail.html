@@ -1,0 +1,114 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .attendance-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+    }
+
+    .attendance-container h2 {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .course-meta {
+        text-align: center;
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .summary-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .summary-stats p {
+        background: #fff;
+        padding: 12px 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 30%;
+        color: #444;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f4f4f4;
+    }
+
+    tr:hover {
+        background-color: #eef;
+    }
+
+    .status-present {
+        color: green;
+        font-weight: bold;
+    }
+
+    .status-absent {
+        color: red;
+        font-weight: bold;
+    }
+
+    .status-late {
+        color: orange;
+        font-weight: bold;
+    }
+</style>
+
+<div class="attendance-container">
+    <h2>Attendance for {{ course.name }}</h2>
+    <div class="course-meta">
+        <p><strong>Course Code:</strong> {{ course.code }} &nbsp;&nbsp; | &nbsp;&nbsp;
+           <strong>Class:</strong> {{ request.user.student_profile.class_name }} - {{ request.user.student_profile.section }}</p>
+    </div>
+
+    <div class="summary-stats">
+        <p><strong>Total:</strong><br>{{ total }}</p>
+        <p><strong>Present:</strong><br>{{ present_percent }}%</p>
+        <p><strong>Absent:</strong><br>{{ absent_percent }}%</p>
+        <p><strong>Late:</strong><br>{{ late_percent }}%</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.date }}</td>
+            <td class="status-{{ record.status }}">{{ record.status|title }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

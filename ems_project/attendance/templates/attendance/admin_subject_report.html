@@ -1,0 +1,66 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<style>
+    .report-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 25px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+    }
+
+    th {
+        background-color: #eee;
+        color: #333;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f4f4f4;
+    }
+
+    .status-present { color: green; font-weight: bold; }
+    .status-absent { color: red; font-weight: bold; }
+    .status-late { color: orange; font-weight: bold; }
+</style>
+
+<div class="report-container">
+    <h2>Attendance Report for {{ course.name }} ({{ course.code }})</h2>
+    <p><strong>Instructor:</strong> {{ course.teacher.get_full_name }}</p>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Student</th>
+            <th>Roll Number</th>
+            <th>Status</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.date }}</td>
+            <td>{{ record.student.get_full_name }}</td>
+            <td>{{ record.student.student_profile.roll_number }}</td>
+            <td class="status-{{ record.status }}">{{ record.status|title }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<h2>Teacher Profile</h2>
+{% if profile %}
+    <p><strong>Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+    <p><strong>Username:</strong> {{ profile.user.username }}</p>
+    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+    <p><strong>Employee ID:</strong> {{ profile.employee_id }}</p>
+    <p><strong>Department:</strong> {{ profile.department }}</p>
+    <p><strong>Subject Specialization:</strong> {{ profile.subject_specialization }}</p>
+{% else %}
+    <p>No teacher profile found. Please contact admin to create one.</p>
+{% endif %}
+{% endblock %}

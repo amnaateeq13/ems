@@ -1,0 +1,15 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<h2>Student Profile</h2>
+{% if profile %}
+    <p><strong>Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+    <p><strong>Username:</strong> {{ profile.user.username }}</p>
+    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+    <p><strong>Roll Number:</strong> {{ profile.roll_number }}</p>
+    <p><strong>Class:</strong> {{ profile.class_name }}</p>
+    <p><strong>Section:</strong> {{ profile.section }}</p>
+{% else %}
+    <p>No profile data found. Please contact the admin to create your profile.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+<!-- Subjects Table -->
+{% if subjects %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>Subject Name</th>
+            <th>Subject Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+        <tr>
+            <td>{{ subject.name }}</td>
+            <td>{{ subject.code }}</td>
+            <td>
+                <a href="{% url 'exams:upload_exam_result' %}?subject={{ subject.id }}" class="btn btn-primary">Upload Result</a>
+                <a href="{% url 'exams:view_results_by_subject' subject.id %}" class="btn btn-success">View Results</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No subjects assigned to you.</p>
+{% endif %}
+
+<!-- Exams Table -->
+<h2>Scheduled Exams</h2>
+{% if exams %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Exam Title</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for exam in exams %}
+        <tr>
+            <td>{{ exam.subject.name }}</td>
+            <td>{{ exam.title }}</td>
+            <td>{{ exam.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No exams scheduled yet.</p>
+{% endif %}

@@ -1,0 +1,22 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<h2>Teacher Dashboard</h2>
+
+<div class="card-container">
+    <div class="card">
+        <h3>Total Courses</h3>
+        <p style="font-size: 22px;">{{ total_courses }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Students</h3>
+        <p style="font-size: 22px;">{{ total_students }}</p>
+    </div>
+    <div class="card">
+        <h3>Announcements Made</h3>
+        <p style="font-size: 22px;">{{ announcements }}</p>
+    </div>
+   
+    
+</div>
+{% endblock %}

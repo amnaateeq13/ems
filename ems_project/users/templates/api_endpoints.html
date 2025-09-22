@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EMS - API Endpoints</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 40px; }
+    h1 { color: #2c3e50; margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .card h3 { margin-top: 0; }
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #2980b9;
+      font-weight: bold;
+    }
+    .card a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Education Management System - API Endpoints</h1>
+  <div class="grid">
+    <div class="card">
+      <h3>Swagger UI</h3>
+      <a href="{% url 'schema-swagger-ui' %}" target="_blank">Open Swagger</a>
+    </div>
+    <div class="card">
+      <h3>ReDoc</h3>
+      <a href="{% url 'schema-redoc' %}" target="_blank">Open ReDoc</a>
+    </div>
+    <div class="card">
+      <h3>Students</h3>
+      <a href="/students/api/students/" target="_blank">View Students API</a>
+    </div>
+    <div class="card">
+      <h3>Teachers</h3>
+      <a href="/teachers/api/teachers/" target="_blank">View Teachers API</a>
+    </div>
+    <div class="card">
+      <h3>Parents</h3>
+      <a href="/parents/api/parents/" target="_blank">View Parents API</a>
+    </div>
+    <div class="card">
+      <h3>Courses</h3>
+      <a href="/courses/api/courses/" target="_blank">View Courses API</a>
+    </div>
+    <div class="card">
+      <h3>Attendance</h3>
+      <a href="/attendance/api/attendance/" target="_blank">View Attendance API</a>
+    </div>
+    <div class="card">
+      <h3>Exams</h3>
+      <a href="/exams/api/exams/" target="_blank">View Exams API</a>
+    </div>
+    
+    <div class="card">
+      <h3>Fees</h3>
+      <a href="/fees/api/fees/" target="_blank">View Fees API</a>
+    </div>
+    <div class="card">
+      <h3>Timetables</h3>
+      <a href="/timetable/api/timetables/" target="_blank">View Timetables API</a>
+    </div>
+  </div>
+</body>
+</html>

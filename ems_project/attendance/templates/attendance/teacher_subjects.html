@@ -1,0 +1,126 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .subject-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+    }
+
+    .subject-title {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 24px;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .search-input {
+        padding: 8px 12px;
+        width: 80%;
+        font-size: 16px;
+        border-radius: 4px;
+        border: 1px solid #aaa;
+    }
+
+    .subject-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 12px 20px;
+        margin-bottom: 12px;
+        transition: background 0.3s;
+    }
+
+    .subject-item:hover {
+        background: #f0f0f0;
+    }
+
+    .subject-info {
+        font-weight: bold;
+        color: #444;
+    }
+
+    .subject-info span {
+        font-weight: normal;
+        color: #666;
+        margin-left: 8px;
+        font-size: 14px;
+    }
+
+    .subject-buttons a {
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        color: #fff;
+        margin-left: 10px;
+        font-size: 14px;
+    }
+
+    .upload-btn {
+        background-color: #28a745;
+    }
+
+    .view-btn {
+        background-color: #007bff;
+    }
+
+    .no-courses {
+        text-align: center;
+        color: #777;
+        padding: 20px;
+        font-style: italic;
+    }
+</style>
+
+<div class="subject-container">
+    <h2 class="subject-title">Your Assigned Subjects</h2>
+
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" onkeyup="filterSubjects()" placeholder="Search by subject name or code...">
+    </div>
+
+    {% if courses %}
+        <div id="subjectList">
+            {% for course in courses %}
+            <div class="subject-item">
+                <div class="subject-info">
+                    {{ course.name }} <span>({{ course.code }})</span>
+                </div>
+                <div class="subject-buttons">
+                    <a href="{% url 'upload_attendance' course.id %}" class="upload-btn">Upload Attendance</a>
+                    <a href="{% url 'view_attendance' course.id %}" class="view-btn">View Attendance</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-courses">No courses assigned.</div>
+    {% endif %}
+</div>
+
+<script>
+function filterSubjects() {
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
+    const items = document.querySelectorAll(".subject-item");
+
+    items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(filter) ? "flex" : "none";
+    });
+}
+</script>
+{% endblock %}

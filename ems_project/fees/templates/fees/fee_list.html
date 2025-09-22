@@ -1,0 +1,166 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="fee-container">
+    <h2>Fee Management</h2>
+
+    <!-- ✅ Search Bar -->
+    <form method="get" class="search-bar">
+        <input type="text" name="q" placeholder="Search by Student Name, ID, Class, Year..." value="{{ request.GET.q }}">
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
+            <option value="unpaid" {% if request.GET.status == "unpaid" %}selected{% endif %}>Unpaid</option>
+        </select>
+        <button type="submit" class="btn btn-search">Search</button>
+        <a href="{% url 'fee_list' %}" class="btn btn-reset">Reset</a>
+    </form>
+
+    <table class="fee-table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Class</th>
+                <th>Year</th>
+                <th>Annual Fee</th>
+                <th>Date Generated</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fee in fees %}
+            <tr>
+                <td>{{ fee.student.student_profile.roll_number }}</td>
+                <td>{{ fee.student.username }}</td>
+                <td>{{ fee.student.student_profile.class_name }}</td>
+                <td>{{ fee.year }}</td>
+                <td>{{ fee.annual_fee }}</td>
+                <td>{{ fee.date_generated|date:"Y-m-d" }}</td>
+                <td class="nowrap">{{ fee.due_date|date:"Y-m-d" }}</td>
+                <td>
+                    <span class="status {{ fee.status }}">
+                        {{ fee.status|title }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'fee_edit' fee.id %}" class="btn btn-edit">Edit</a>
+                    <a href="{% url 'fee_delete' fee.id %}" class="btn btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9">No fee records found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <a href="{% url 'fee_create' %}" class="btn btn-generate">Generate Fee Voucher</a>
+    </div>
+</div>
+
+<style>
+    .fee-container {
+        max-width: 100%;
+        margin: 50px auto;
+        background: #f9f9f9;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+    .fee-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 26px;
+        font-weight: 600;
+    }
+    /* ✅ Search Bar Styling */
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .search-bar input, .search-bar select {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+    .btn-search {
+        background-color: #28a745;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-reset {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-search:hover, .btn-reset:hover { opacity: 0.85; }
+
+    .fee-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    .fee-table th, .fee-table td {
+        padding: 10px 12px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+    .fee-table th {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .fee-table tr:hover {
+        background-color: #f5f7fa;
+    }
+    .status.paid { color: green; font-weight: 600; }
+    .status.unpaid { color: red; font-weight: 600; }
+
+    .btn {
+        padding: 4px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 12px;
+        display: inline-block;
+        margin: 0 1px;
+        transition: 0.2s;
+    }
+    .btn-edit { background-color: #28a745; }
+    .btn-delete { background-color: #dc3545; }
+
+    .btn-generate { 
+        background-color: #007bff;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 6px;
+        display: inline-block;
+        transition: 0.3s;
+    }
+    .btn-generate:hover { background-color: #0069d9; }
+
+    .actions { text-align: center; margin-top: 15px; }
+</style>
+{% endblock %}

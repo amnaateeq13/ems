@@ -1,0 +1,110 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .announcement-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .announcement-container h2 {
+        font-size: 24px;
+        color: #2c3e50;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+
+    .announcement-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .announcement-list li {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 5px solid #3498db;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .announcement-list li strong {
+        font-size: 18px;
+        color: #34495e;
+    }
+
+    .announcement-list li em {
+        color: #888;
+        font-size: 13px;
+        display: block;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .no-announcements {
+        text-align: center;
+        color: #999;
+        margin-top: 10px;
+        font-size: 15px;
+    }
+
+    .create-btn {
+        display: inline-block;
+        background-color: #2ecc71;
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 5px;
+        margin: 10px 0 25px 0;
+        transition: background-color 0.3s ease;
+    }
+
+    .create-btn:hover {
+        background-color: #27ae60;
+    }
+</style>
+
+<div class="announcement-container">
+    <h2>Announcements Relevant to You</h2>
+    <a href="{% url 'teacher_create_announcement' %}" class="create-btn"> Create New Announcements</a>
+    {% if announcements %}
+        <ul class="announcement-list">
+            {% for item in announcements %}
+                <li>
+                    <strong>{{ item.title }}</strong><br>
+                    <em>{{ item.created_at|date:"d M Y H:i" }} by {{ item.created_by.username }}</em><br>
+                    <em><strong>For:</strong> {{ item.get_audience_display }}</em><br>
+                    {{ item.message|linebreaks }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-announcements">No announcements for you.</p>
+    {% endif %}
+
+    <h2 style="margin-top:40px;">Your Created Announcements</h2>
+    
+    
+    {% if my_announcements %}
+        <ul class="announcement-list">
+            {% for item in my_announcements %}
+                <li>
+                    <strong>{{ item.title }}</strong><br>
+                    <em>{{ item.created_at|date:"d M Y H:i" }} (You)</em><br>
+                    <em><strong>For:</strong> {{ item.get_audience_display }}</em><br>
+                    {{ item.message|linebreaks }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-announcements">You haven't posted any announcements yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

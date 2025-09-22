@@ -1,0 +1,109 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="fee-container">
+    <h2>Edit Fee</h2>
+    
+    {% if form.errors %}
+    <div class="error-messages" style="color:red; margin-bottom:15px;">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" class="fee-form">
+        {% csrf_token %}
+
+        <!-- Student Selection -->
+        <label>Student:</label>
+        {{ form.student }}
+
+        <!-- Student Info (shows current) -->
+        <div class="student-info">
+            <p><strong>Student ID:</strong> {{ fee.student.student_profile.roll_number }}</p>
+            <p><strong>Student Name:</strong> {{ fee.student.username }}</p>
+            <p><strong>Class:</strong> {{ fee.student.student_profile.class_name }}</p>
+        </div>
+
+        <!-- Editable Fields -->
+        <label>Annual Fee:</label>
+        {{ form.annual_fee }}
+
+        <label>Year:</label>
+        {{ form.year }}
+
+        <label>Date Generated:</label>
+        {{ form.date_generated }}
+
+        <label>Due Date:</label>
+        {{ form.due_date }}
+
+        <label>Status:</label>
+        {{ form.status }}
+
+        <div class="actions">
+            <button type="submit" class="btn btn-save">Save Changes</button>
+            <a href="{% url 'fee_list' %}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .fee-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #f9f9f9;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+    .fee-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .fee-form label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    .fee-form input, .fee-form select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .student-info {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+    }
+    .student-info p { margin: 5px 0; }
+    .actions {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .btn {
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        margin: 0 5px;
+    }
+    .btn-save { background-color: #28a745; }
+    .btn-cancel { background-color: #6c757d; }
+</style>
+{% endblock %}

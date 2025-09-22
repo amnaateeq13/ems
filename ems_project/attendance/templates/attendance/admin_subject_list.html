@@ -1,0 +1,46 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<style>
+    .subject-list {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+    }
+    .subject-item {
+        display: flex;
+        justify-content: space-between;
+        background: #fff;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .view-btn {
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 5px;
+    }
+    .view-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="subject-list">
+    <h2>All Subjects (Attendance Report)</h2>
+    {% for subject in subjects %}
+    <div class="subject-item">
+        <div>
+            <strong>{{ subject.name }}</strong><br>
+            Code: {{ subject.code }}<br>
+            Teacher: {{ subject.teacher.get_full_name }}
+        </div>
+        <a href="{% url 'admin_subject_attendance_report' subject.id %}" class="view-btn">View Report</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .content-container {
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    .add-student-btn {
+        display: inline-block;
+        padding: 10px 16px;
+        background-color: #004466;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .add-student-btn:hover {
+        background-color: #0b6c9c;
+    }
+
+    .search-bar {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .search-bar input {
+        width: 1000px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        font-size: 14px;
+    }
+
+    thead {
+        background-color: #f2f2f2;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+        vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-sm {
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        text-decoration: none;
+        margin-right: 6px;
+    }
+
+    .btn-outline-primary {
+        color: #004466;
+        border: 1px solid #004466;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #004466;
+        color: #fff;
+    }
+
+    .btn-outline-danger {
+        color: #004466;
+        border: 1px solid #004466;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    ul.subject-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+    ul.subject-list li {
+        margin-bottom: 2px;
+    }
+</style>
+
+<div class="content-container">
+    <h2 style="color: black;">Manage Students</h2>
+    <a href="{% url 'add_student' %}" class="add-student-btn" > Add Student</a>
+
+ 
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by Roll No, Name, Email, Class, or Teacher...">
+    </div>
+
+    <table>
+        <thead>
+            <tr style="background-color: #004466; color: white;">
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Allocated Subjects</th>
+                <th>Allocated Teacher</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="student_table_body">
+            {% include 'students/student_table_body.html' %}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+document.getElementById('searchInput').addEventListener('input', function() {
+    let query = this.value;
+
+    fetch(`{% url 'search_students_ajax' %}?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('student_table_body').innerHTML = data.html;
+        });
+});
+</script>
+
+{% endblock %}

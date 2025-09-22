@@ -1,0 +1,129 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+
+<style>
+    .attendance-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .attendance-container h2 {
+        text-align: center;
+        color: #1d3557;
+        margin-bottom: 25px;
+        font-size: 28px;
+    }
+
+    .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .attendance-table th, .attendance-table td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+    }
+
+    .attendance-table th {
+        background-color: #457b9d;
+        color: white;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+
+    .attendance-table tr:hover {
+        background-color: #f5f7fa;
+    }
+
+
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-weight: bold;
+        color: white;
+        font-size: 12px;
+        text-transform: capitalize;
+    }
+    .status.present { background-color: #28a745; } 
+    .status.absent { background-color: #dc3545; }  
+    .status.late { background-color: #fd7e14; }    
+
+
+    @media (max-width: 768px) {
+        .attendance-table thead {
+            display: none;
+        }
+        .attendance-table, .attendance-table tbody, .attendance-table tr, .attendance-table td {
+            display: block;
+            width: 100%;
+        }
+        .attendance-table tr {
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .attendance-table td {
+            padding: 10px 15px;
+            text-align: right;
+            position: relative;
+        }
+        .attendance-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 15px;
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+        }
+    }
+</style>
+
+<div class="attendance-container">
+    <h2>Parent Attendance Records</h2>
+
+    <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>Child</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td data-label="Child">{{ record.student.first_name }} {{ record.student.last_name }}</td>
+                <td data-label="Subject">{{ record.course|default:"N/A" }}</td>
+                <td data-label="Date">{{ record.date|date:"Y-m-d" }}</td>
+                <td data-label="Status">
+                    <span class="status {{ record.status }}">{{ record.status|title }}</span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align:center;color:#888;font-style:italic;">
+                    No attendance records found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

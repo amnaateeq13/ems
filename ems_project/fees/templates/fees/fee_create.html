@@ -1,0 +1,132 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<div class="fee-container">
+    <h2>Generate Fee Voucher</h2>
+
+    <form method="post" class="fee-form">
+        {% csrf_token %}
+        
+        <!-- Student Selection -->
+        <label for="id_student">Select Student:</label>
+        {{ form.student }}
+        
+        <!-- Dynamic Student Info -->
+        <div class="student-info" id="student-info" style="display:none;">
+            <p><strong>Student ID:</strong> <span id="student-id"></span></p>
+            <p><strong>Student Name:</strong> <span id="student-name"></span></p>
+            <p><strong>Class:</strong> <span id="student-class"></span></p>
+        </div>
+
+        <!-- Annual Fee -->
+        <label for="id_annual_fee">Annual Fee:</label>
+        {{ form.annual_fee }}
+
+        <!-- Year -->
+        <label for="id_year">Year:</label>
+        {{ form.year }}
+
+        <!-- Date of Generation -->
+        <label for="id_date_generated">Date of Generation:</label>
+        {{ form.date_generated }}
+
+        <!-- Due Date -->
+        <label for="id_due_date">Due Date:</label>
+        {{ form.due_date }}
+
+
+        <!-- Status -->
+        <label>Status:</label>
+        {{ form.status }}
+
+        <!-- Actions -->
+        <div class="actions">
+            <button type="submit" class="btn btn-generate">Generate Voucher</button>
+            <a href="{% url 'fee_list' %}" class="btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript for Dynamic Student Info -->
+<script type="text/javascript">
+    // Create a JSON object that VS Code can parse correctly
+    const studentData = JSON.parse(`{
+        {% for s in students %}
+        "{{ s.id }}": {
+            "id": "{{ s.student_profile.roll_number|escapejs }}",
+            "name": "{{ s.username|escapejs }}",
+            "class": "{{ s.student_profile.class_name|escapejs }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    }`);
+
+    const studentSelect = document.getElementById('id_student');
+    const infoDiv = document.getElementById('student-info');
+
+    studentSelect.addEventListener('change', function() {
+        const selectedId = this.value;
+        if(studentData[selectedId]) {
+            document.getElementById('student-id').textContent = studentData[selectedId].id;
+            document.getElementById('student-name').textContent = studentData[selectedId].name;
+            document.getElementById('student-class').textContent = studentData[selectedId].class;
+            infoDiv.style.display = 'block';
+        } else {
+            infoDiv.style.display = 'none';
+        }
+    });
+</script>
+
+<!-- Styling -->
+<style>
+    .fee-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #f9f9f9;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: Arial, sans-serif;
+    }
+    .fee-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .fee-form label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    .fee-form input, .fee-form select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .student-info {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border: 1px solid #ddd;
+    }
+    .student-info p {
+        margin: 5px 0;
+    }
+    .actions {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .btn {
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        margin: 0 5px;
+    }
+    .btn-generate { background-color: #007bff; }
+    .btn-cancel { background-color: #6c757d; }
+</style>
+{% endblock %}

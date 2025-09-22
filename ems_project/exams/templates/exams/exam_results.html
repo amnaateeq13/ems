@@ -1,0 +1,29 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<h2>Exam Results</h2>
+{% if results %}
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Exam</th>
+            <th>Marks Obtained</th>
+            <th>Total Marks</th>
+            <th>Date</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.student.user.get_full_name }}</td>
+            <td>{{ result.course.name }}</td>
+            <td>{{ result.exam_name }}</td>
+            <td>{{ result.marks_obtained }}</td>
+            <td>{{ result.total_marks }}</td>
+            <td>{{ result.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No exam results found.</p>
+{% endif %}
+{% endblock %}

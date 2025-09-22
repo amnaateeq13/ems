@@ -1,0 +1,179 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+<style>
+    .chat-container {
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #fefefe;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .chat-header {
+        margin-bottom: 20px;
+    }
+
+    .chat-select {
+        margin-bottom: 10px;
+        padding: 8px;
+        width: 100%;
+    }
+
+    .chat-box {
+        height: 300px;
+        overflow-y: auto;
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .chat-message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .from-me {
+        background: #e1f5fe;
+        text-align: right;
+    }
+
+    .from-them {
+        background: #f1f1f1;
+        text-align: left;
+    }
+
+    .chat-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .send-btn {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .send-btn:hover {
+        background: #2980b9;
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <form method="get">
+            {% if role == 'admin' %}
+                <label>Select Role:</label>
+                <select name="role" class="chat-select" onchange="this.form.submit()">
+                    <option value="">-- Select Audince --</option>
+                    <option value="teacher" {% if selected_role == 'teacher' %}selected{% endif %}>Teacher</option>
+                    <option value="student" {% if selected_role == 'student' %}selected{% endif %}>Student</option>
+                    <option value="parent" {% if selected_role == 'parent' %}selected{% endif %}>Parent</option>
+                </select>
+        
+                {% if selected_role %}
+                    <label>Select {{ selected_role|title }}:</label>
+                    <select name="receiver" class="chat-select" onchange="this.form.submit()">
+                        <option value="">-- Select {{ selected_role|title }} --</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}" {% if selected_user and user.id == selected_user.id %}selected{% endif %}>
+                                {{ user.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            {% else %}
+                <label>Select User:</label>
+                <select name="receiver" class="chat-select" onchange="this.form.submit()">
+                    <option value="">-- Select User --</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}" {% if selected_user and user.id == selected_user.id %}selected{% endif %}>
+                            {{ user.username }} ({{ user.role|title }})
+                        </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </form>
+        
+    </div>
+
+    {% if selected_user %}
+    <div class="chat-box">
+        {% for msg in messages %}
+            <div class="chat-message {% if msg.sender == request.user %}from-me{% else %}from-them{% endif %}">
+                <small><strong>{{ msg.sender.username }}</strong> @ {{ msg.timestamp|date:"d M Y H:i" }}</small><br>
+                {{ msg.content }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="send-btn">Send</button><br><br>
+    </form>
+    {% endif %}
+   
+    <a href="{% url 'chat_history' %}" style="
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2ecc71;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    position: relative;
+    transition: background-color 0.3s;
+" onmouseover="this.style.backgroundColor='#27ae60'" onmouseout="this.style.backgroundColor='#2ecc71'">
+  Chat History
+  {% if unread_count_global > 0 %}
+      <span style="
+          position: absolute;
+          top: -5px;
+          right: -10px;
+          background-color: red;
+          color: white;
+          font-size: 11px;
+          padding: 2px 6px;
+          border-radius: 12px;
+      ">New</span>
+  {% endif %}
+</a>
+     
+      
+
+</div>
+
+{% if selected_user %}
+<script>
+    function fetchMessages() {
+        fetch("{% url 'fetch_messages_ajax' selected_user.id %}")
+        .then(response => response.json())
+        .then(data => {
+            const chatBox = document.querySelector('.chat-box');
+            chatBox.innerHTML = '';
+            data.messages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'chat-message ' + (msg.me ? 'from-me' : 'from-them');
+                div.innerHTML = `<small><strong>${msg.sender}</strong> @ ${msg.timestamp}</small><br>${msg.content}`;
+                chatBox.appendChild(div);
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    }
+
+    setInterval(fetchMessages, 5000);
+    fetchMessages();
+</script>
+{% endif %}
+{% endblock %}

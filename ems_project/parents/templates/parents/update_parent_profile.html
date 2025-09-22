@@ -1,0 +1,76 @@
+{% extends 'users/dashboard_base.html' %}
+{% block content %}
+
+<style>
+    .update-form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .update-form-container h2 {
+        text-align: center;
+        color: #1d3557;
+        margin-bottom: 20px;
+    }
+
+    .update-form-container form p {
+        margin-bottom: 15px;
+    }
+
+    .update-form-container input, .update-form-container textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn-save {
+        background-color: #2a9d8f;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-save:hover {
+        background-color: #21867a;
+    }
+
+    .btn-cancel {
+        background-color: #e63946;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .btn-cancel:hover {
+        background-color: #b02a37;
+    }
+</style>
+
+<div class="update-form-container">
+    <h2>Update Parent Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-save">Save Changes</button>
+        <a href="{% url 'parent_profile' %}" class="btn-cancel">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

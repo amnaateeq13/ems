@@ -1,0 +1,98 @@
+{% extends 'users/dashboard_base.html' %}
+
+{% block content %}
+<style>
+    .announcement-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .announcement-container h2 {
+        text-align: center;
+        font-size: 26px;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 10px;
+    }
+
+    .announcement-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .announcement-list li {
+        background-color: #ffffff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 5px solid #3498db;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .announcement-list li strong {
+        font-size: 18px;
+        color: #34495e;
+    }
+
+    .announcement-list li em {
+        display: block;
+        font-size: 14px;
+        color: #777;
+        margin: 8px 0;
+    }
+
+    .announcement-list li span {
+        display: inline-block;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .announcement-list li a {
+        display: inline-block;
+        padding: 8px 14px;
+        background-color: #2ecc71;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .announcement-list li a:hover {
+        background-color: #27ae60;
+    }
+
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ddd;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="announcement-container">
+    <h2>Your Conversations</h2>
+    <ul class="announcement-list">
+        {% for chat in chat_data %}
+        <li>
+            <strong>{{ chat.partner.username }} ({{ chat.partner.role }})</strong><br>
+            <em>Last: {{ chat.last_message.content|truncatewords:10 }}</em>
+            {% if chat.unread_count > 0 %}
+                <span style="color: red;"><strong>{{ chat.unread_count }} unread</strong></span>
+            {% else %}
+                <span style="color: green;">All caught up</span>
+            {% endif %}
+            <br>
+            <a href="{% url 'role_chat' %}?receiver={{ chat.partner.id }}">Continue Chat</a>
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
